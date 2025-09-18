@@ -1,0 +1,41 @@
+TM - turno de mañana de 6am a 2 pm
+TT - turno de tarde de 2pm a 10pm
+TN - turno nocturno de 10 pm a 6am
+tania tm
+carlos tt
+bryan tn
+dilan tm
+tania tt
+"nombre"+td - turno descanso
+
+|turno|     lunes |    martes |   miércoles |    jueves | viernes    | sábado  | domingo    |
+|_____|___________|___________|_____________|___________|____________|_________|____________|
+|turno|    1      |     2     |     3       |     4     |      5     |    6    |      7     |
+| TD  |carlos-TD  |carlos-TD  |bryan-TD     |bryan-TD   |dilan-TD    |dilan-TD |tannia-TD   |
+| TM  |tania-TM   |tania-TM   |tania-TM     |tania-TM   |tania-TM    |tania-TM |dilan-TM    |
+| TT  |bryan-TT   |bryan-TT   |carlos-TT    |carlos-TT  |carlos-TT   |carlos-TT|carlos-TT   |     
+| TN  |dilan-TN   |dilan-TN   |dilan-TN     |dilan-TN   |bryan-TN    |bryan-TN |bryan-TN    |
+_____________________________________________________________________________________________
+|turno|   8       |     9     |     10      |     11    |   12       |  13     |   14        |
+| TD  |tannia-TD  |carlos-TD  |carlos-TD    |bryan-TD   |bryan-TD    |dilan-TD |dilan-TD     |
+| TM  |dilan-TM   |dilan-TM   |dilan-TM     |dilan-TM   |dilan-TM    |bryan-TM |bryan-TM     |
+| TT  |carlos-TT  |tania-TT   |tania-TT     |tania-TT   |tania-TT    |tania-TT |tania-TT     |
+| TN  |bryan-TN   |bryan-TN   |bryan-TN     |carlos-TN  |carlos-TN   |carlos-TN|carlos-TN    |
+_____________________________________________________________________________________________|
+|turno|    15    |    16     |     17       |    18     |     19     |    20     |      21   |
+| TD  |tannia-TD |tannia-TD  |carlos-TD     |carlos-TD  |bryan-TD    |bryan-TD   |dilan-TD   |
+| TM  |bryan-TM  |bryan-TM   |bryan-TM      |bryan-TM   |carlos-TM   |carlos-TM  |carlos-TM  |
+| TT  |dilan-TT  |dilan-TT   |dilan-TT      |dilan-TT   |dilan-TT    |dilan-TT   |bryan-TT   |
+| TN  |carlos-TN |carlos-TN  |tania-TN      |tania-TN   |tania-TN    |tania-TN   |tania-TN   |
+____________________________________________________________________________________________|
+|turno|    22    |    23     |     24       |    25     |     26     |    27     |      28  |
+| TD  |dilan-TD  |tannia-TD  |tannia-TD     |carlos-TD  |carlos-TD   |bryan-TD   |bryan-TD  |
+| TM  |carlos-TM |carlos-TM  |carlos-TM     |tania-TM   |tania-TM    |tania-TM   |tania-TM  | 
+| TT  |bryan-TT  |bryan-TT   |bryan-TT      |bryan-TT   |bryan-TT    |carlos-TT  |carlos-TD |
+| TN  |tania-TN  |dilan-TN   |dilan-TN      |dilan-TN   |dilan-TN    |dilan-TN   |dilan-TN  | 
+____________________________________________________________________________________________|
+|turno|    29    |    30     |
+| TD  |dilan-TD  |dilan-TD   |
+| TM  |tania-TM  |tania-TM   |
+| TT  |carlos-TD |carlos-TD  |
+| TN  |bryan-TN  |bryan-TN   |

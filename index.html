@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Horarios - NOC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Generador de Horarios NOC</h1>
+            <p>Sistema de rotación de turnos para 4 empleados</p>
+        </header>
+
+        <div class="controls">
+            <div class="input-group">
+                <label for="month">Mes:</label>
+                <select id="month">
+                    <option value="0">Enero</option>
+                    <option value="1">Febrero</option>
+                    <option value="2">Marzo</option>
+                    <option value="3">Abril</option>
+                    <option value="4">Mayo</option>
+                    <option value="5">Junio</option>
+                    <option value="6">Julio</option>
+                    <option value="7">Agosto</option>
+                    <option value="8">Septiembre</option>
+                    <option value="9">Octubre</option>
+                    <option value="10">Noviembre</option>
+                    <option value="11">Diciembre</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="year">Año:</label>
+                <input type="number" id="year" value="2024" min="2020" max="2030">
+            </div>
+            
+            <button id="generateBtn" onclick="generateSchedule()">Generar Horario</button>
+        </div>
+
+        <div class="legend">
+            <h3>Leyenda de Turnos:</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <span class="legend-color tm"></span>
+                    <span>TM - Turno Mañana (6am - 2pm)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color tt"></span>
+                    <span>TT - Turno Tarde (2pm - 10pm)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color tn"></span>
+                    <span>TN - Turno Nocturno (10pm - 6am)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color td"></span>
+                    <span>TD - Turno Descanso</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="employees-info">
+            <h3>Empleados:</h3>
+            <div class="employees-list">
+                <span class="employee">Tania</span>
+                <span class="employee">Carlos</span>
+                <span class="employee">Bryan</span>
+                <span class="employee">Dilan</span>
+            </div>
+        </div>
+
+        <div id="scheduleContainer">
+            <div id="scheduleTable"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
