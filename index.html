@@ -3,79 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Horarios - NOC</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Generador de Horarios NOC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'noc-blue': '#1e40af',
+                        'noc-light': '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Generador de Horarios NOC</h1>
-            <p>Sistema de rotación de turnos para 4 empleados</p>
-        </header>
-
-        <div class="controls">
-            <div class="input-group">
-                <label for="month">Mes:</label>
-                <select id="month">
-                    <option value="0">Enero</option>
-                    <option value="1">Febrero</option>
-                    <option value="2">Marzo</option>
-                    <option value="3">Abril</option>
-                    <option value="4">Mayo</option>
-                    <option value="5">Junio</option>
-                    <option value="6">Julio</option>
-                    <option value="7">Agosto</option>
-                    <option value="8">Septiembre</option>
-                    <option value="9">Octubre</option>
-                    <option value="10">Noviembre</option>
-                    <option value="11">Diciembre</option>
-                </select>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg border-b-4 border-noc-blue">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Generador de Horarios NOC</h1>
+                <p class="text-lg text-gray-600">Sistema de rotación de turnos para 4 empleados</p>
             </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Controls Card -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Configuración del Horario</h2>
             
-            <div class="input-group">
-                <label for="year">Año:</label>
-                <input type="number" id="year" value="2024" min="2020" max="2030">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Mes -->
+                <div class="space-y-2">
+                    <label for="month" class="block text-sm font-medium text-gray-700">Mes</label>
+                    <select id="month" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-noc-blue focus:border-transparent transition-all duration-200 bg-white">
+                        <option value="0">Enero</option>
+                        <option value="1">Febrero</option>
+                        <option value="2">Marzo</option>
+                        <option value="3">Abril</option>
+                        <option value="4">Mayo</option>
+                        <option value="5">Junio</option>
+                        <option value="6" selected>Julio</option>
+                        <option value="7">Agosto</option>
+                        <option value="8">Septiembre</option>
+                        <option value="9">Octubre</option>
+                        <option value="10">Noviembre</option>
+                        <option value="11">Diciembre</option>
+                    </select>
+                </div>
+
+                <!-- Año -->
+                <div class="space-y-2">
+                    <label for="year" class="block text-sm font-medium text-gray-700">Año</label>
+                    <input type="number" id="year" value="2025" min="2020" max="2030" 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-noc-blue focus:border-transparent transition-all duration-200">
+                </div>
+
+                <!-- Empleado que inicia -->
+                <div class="space-y-2">
+                    <label for="startEmployee" class="block text-sm font-medium text-gray-700">Empleado que inicia</label>
+                    <select id="startEmployee" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-noc-blue focus:border-transparent transition-all duration-200 bg-white">
+                        <option value="alphabetical">Orden Alfabético</option>
+                        <option value="tania">Tania</option>
+                        <option value="carlos">Carlos</option>
+                        <option value="bryan">Bryan</option>
+                        <option value="dilan">Dilan</option>
+                    </select>
+                </div>
+
+                <!-- Turno inicial -->
+                <div class="space-y-2">
+                    <label for="startShift" class="block text-sm font-medium text-gray-700">Turno inicial</label>
+                    <select id="startShift" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-noc-blue focus:border-transparent transition-all duration-200 bg-white">
+                        <option value="TM" selected>Mañana (TM)</option>
+                        <option value="TT">Tarde (TT)</option>
+                        <option value="TN">Noche (TN)</option>
+                        <option value="TD">Descanso (TD)</option>
+                    </select>
+                </div>
+
+                <!-- Botón Generar -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-transparent">Acción</label>
+                    <button id="generateBtn" onclick="generateSchedule()" 
+                            class="w-full bg-noc-blue hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <span class="flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Generar
+                        </span>
+                    </button>
+                </div>
             </div>
-            
-            <button id="generateBtn" onclick="generateSchedule()">Generar Horario</button>
         </div>
 
-        <div class="legend">
-            <h3>Leyenda de Turnos:</h3>
-            <div class="legend-items">
-                <div class="legend-item">
-                    <span class="legend-color tm"></span>
-                    <span>TM - Turno Mañana (6am - 2pm)</span>
+        <!-- Legend and Employees Info -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Leyenda de Turnos -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-noc-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Leyenda de Turnos
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex items-center p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                        <div class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></div>
+                        <span class="font-medium text-gray-700">TM - Turno Mañana</span>
+                        <span class="ml-auto text-sm text-gray-500">06:00 - 14:00</span>
+                    </div>
+                    <div class="flex items-center p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                        <div class="w-4 h-4 bg-blue-400 rounded-full mr-3"></div>
+                        <span class="font-medium text-gray-700">TT - Turno Tarde</span>
+                        <span class="ml-auto text-sm text-gray-500">14:00 - 22:00</span>
+                    </div>
+                    <div class="flex items-center p-3 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                        <div class="w-4 h-4 bg-purple-400 rounded-full mr-3"></div>
+                        <span class="font-medium text-gray-700">TN - Turno Nocturno</span>
+                        <span class="ml-auto text-sm text-gray-500">22:00 - 06:00</span>
+                    </div>
+                    <div class="flex items-center p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
+                        <div class="w-4 h-4 bg-green-400 rounded-full mr-3"></div>
+                        <span class="font-medium text-gray-700">TD - Turno Descanso</span>
+                        <span class="ml-auto text-sm text-gray-500">Libre</span>
+                    </div>
                 </div>
-                <div class="legend-item">
-                    <span class="legend-color tt"></span>
-                    <span>TT - Turno Tarde (2pm - 10pm)</span>
-                </div>
-                <div class="legend-item">
-                    <span class="legend-color tn"></span>
-                    <span>TN - Turno Nocturno (10pm - 6am)</span>
-                </div>
-                <div class="legend-item">
-                    <span class="legend-color td"></span>
-                    <span>TD - Turno Descanso</span>
+            </div>
+
+            <!-- Información de Empleados -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-noc-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Equipo NOC
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-lg text-center font-semibold shadow-md">
+                        <div class="text-2xl mb-1">👨‍💼</div>
+                        <div>Tania</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-lg text-center font-semibold shadow-md">
+                        <div class="text-2xl mb-1">👨‍💻</div>
+                        <div>Carlos</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 rounded-lg text-center font-semibold shadow-md">
+                        <div class="text-2xl mb-1">👨‍🔧</div>
+                        <div>Bryan</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 rounded-lg text-center font-semibold shadow-md">
+                        <div class="text-2xl mb-1">👨‍⚕️</div>
+                        <div>Dilan</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="employees-info">
-            <h3>Empleados:</h3>
-            <div class="employees-list">
-                <span class="employee">Tania</span>
-                <span class="employee">Carlos</span>
-                <span class="employee">Bryan</span>
-                <span class="employee">Dilan</span>
+        <!-- Schedule Container -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center flex items-center justify-center">
+                <svg class="w-7 h-7 mr-3 text-noc-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                Horario Mensual
+            </h3>
+            <div id="scheduleTable" class="overflow-x-auto">
+                <div class="text-center text-gray-500 py-12">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <p class="text-lg">Haz clic en "Generar" para crear el horario</p>
+                </div>
             </div>
         </div>
+    </main>
 
-        <div id="scheduleContainer">
-            <div id="scheduleTable"></div>
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="text-center text-gray-500">
+                <p>&copy; 2025 Sistema NOC - Generador de Horarios</p>
+            </div>
         </div>
-    </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>

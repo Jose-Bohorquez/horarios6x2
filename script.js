@@ -57,17 +57,48 @@ class ScheduleGenerator {
     generateMonthSchedule(month, year) {
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const schedule = {};
-
-        // Generar horario día por día usando el patrón cíclico de 30 días
-        for (let day = 1; day <= daysInMonth; day++) {
-            // Calcular el día en el ciclo de 30 días (1-30)
-            const cycleDay = ((day - 1) % 30) + 1;
+        
+        // Obtener configuración de empleado inicial y turno inicial
+        const startEmployee = document.getElementById('startEmployee').value;
+        const startShift = document.getElementById('startShift').value;
+        
+        // Si se selecciona orden alfabético, usar el patrón base normal
+        if (startEmployee === 'alphabetical') {
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cycleDay = ((day - 1) % 30) + 1;
+                schedule[day] = { ...basePattern[cycleDay] };
+            }
+        } else {
+            // Generar horario personalizado basado en empleado y turno inicial
+            const employeeOrder = this.getEmployeeOrder(startEmployee);
+            const shiftOrder = this.getShiftOrder(startShift);
             
-            // Obtener el patrón para este día del ciclo
-            schedule[day] = { ...basePattern[cycleDay] };
+            for (let day = 1; day <= daysInMonth; day++) {
+                schedule[day] = {};
+                
+                // Asignar turnos rotativos comenzando por el empleado seleccionado
+                for (let i = 0; i < employees.length; i++) {
+                    const employee = employeeOrder[i];
+                    const shiftIndex = (Math.floor((day - 1) / 2) + i) % 4;
+                    schedule[day][employee] = shiftOrder[shiftIndex];
+                }
+            }
         }
 
         return schedule;
+    }
+    
+    // Obtiene el orden de empleados comenzando por el seleccionado
+    getEmployeeOrder(startEmployee) {
+        const startIndex = employees.indexOf(startEmployee);
+        return [...employees.slice(startIndex), ...employees.slice(0, startIndex)];
+    }
+    
+    // Obtiene el orden de turnos comenzando por el seleccionado
+    getShiftOrder(startShift) {
+        const shiftRotation = ['TM', 'TT', 'TN', 'TD'];
+        const startIndex = shiftRotation.indexOf(startShift);
+        return [...shiftRotation.slice(startIndex), ...shiftRotation.slice(0, startIndex)];
     }
 
     // Organiza el horario por turnos para mostrar en tabla
@@ -103,7 +134,7 @@ class ScheduleGenerator {
         ];
         const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
-        let html = `<h2 class="month-title">${monthNames[month]} ${year}</h2>`;
+        let html = `<h2 class="text-2xl font-bold text-center mb-6 text-gray-800">${monthNames[month]} ${year}</h2>`;
 
         // Dividir el mes en semanas de máximo 7 días
         let currentDay = 1;
@@ -113,44 +144,51 @@ class ScheduleGenerator {
             const endDay = Math.min(currentDay + 6, daysInMonth);
             
             html += `
-                <div class="week-container">
-                    <h3 class="week-title">Semana ${weekNumber} (Días ${currentDay}-${endDay})</h3>
-                    <table class="schedule-table">
-                        <thead>
-                            <tr>
-                                <th>Turno</th>`;
+                <div class="mb-8 bg-white rounded-lg shadow-md overflow-hidden">
+                    <h3 class="bg-gray-100 px-4 py-2 text-lg font-semibold text-gray-700 border-b">Semana ${weekNumber} (Días ${currentDay}-${endDay})</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-auto">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Turno</th>`;
 
             // Generar encabezados de días para esta semana
             for (let day = currentDay; day <= endDay; day++) {
                 const date = new Date(year, month, day);
                 const dayName = dayNames[date.getDay()];
-                html += `<th>${day}<br><small>${dayName}</small></th>`;
+                html += `<th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">${day}<br><span class="text-xs text-gray-400">${dayName}</span></th>`;
             }
 
-            html += `</tr></thead><tbody>`;
+            html += `</tr></thead><tbody class="bg-white divide-y divide-gray-200">`;
 
             // Generar filas por turno para esta semana
             shifts.forEach(shift => {
-                html += `<tr><td class="turn-label">${shift}</td>`;
+                const shiftColors = {
+                    'TD': 'bg-gray-100 text-gray-800',
+                    'TM': 'bg-yellow-100 text-yellow-800',
+                    'TT': 'bg-orange-100 text-orange-800',
+                    'TN': 'bg-blue-100 text-blue-800'
+                };
+                
+                html += `<tr class="hover:bg-gray-50"><td class="px-4 py-3 whitespace-nowrap text-sm font-medium ${shiftColors[shift]} border-r">${shift}</td>`;
                 
                 for (let day = currentDay; day <= endDay; day++) {
                     const employeesInShift = organized[shift][day] || [];
-                    const cellClass = `cell-${shift.toLowerCase()}`;
                     
                     if (employeesInShift.length > 0) {
                         const employeeNames = employeesInShift.map(emp => 
                             emp.charAt(0).toUpperCase() + emp.slice(1)
                         ).join('<br>');
-                        html += `<td class="${cellClass}">${employeeNames}</td>`;
+                        html += `<td class="px-4 py-3 text-sm text-center ${shiftColors[shift]} border-r">${employeeNames}</td>`;
                     } else {
-                        html += `<td class="${cellClass}">-</td>`;
+                        html += `<td class="px-4 py-3 text-sm text-center text-gray-400 border-r">-</td>`;
                     }
                 }
                 
                 html += `</tr>`;
             });
 
-            html += `</tbody></table></div>`;
+            html += `</tbody></table></div></div>`;
             
             currentDay = endDay + 1;
             weekNumber++;
@@ -191,3 +229,9 @@ document.getElementById('year').addEventListener('keypress', function(e) {
 
 // Auto-generar cuando cambie el mes
 document.getElementById('month').addEventListener('change', generateSchedule);
+
+// Auto-generar cuando cambie el empleado inicial
+document.getElementById('startEmployee').addEventListener('change', generateSchedule);
+
+// Auto-generar cuando cambie el turno inicial
+document.getElementById('startShift').addEventListener('change', generateSchedule);
